@@ -15,7 +15,7 @@ public class ViewNoteActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_note); 
+        setContentView(R.layout.activity_view_note);
 
         editnotebutton = findViewById(R.id.editnotefab);
         editnotebutton.setOnClickListener(new View.OnClickListener() {
