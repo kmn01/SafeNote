@@ -14,6 +14,7 @@ public class ViewNoteActivity extends AppCompatActivity {
     private FloatingActionButton editnotebutton;
     private TextView viewnote_title;
     private TextView viewnote_content;
+    private Intent data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +25,7 @@ public class ViewNoteActivity extends AppCompatActivity {
         viewnote_content = findViewById(R.id.viewnote_content);
         editnotebutton = findViewById(R.id.editnotefab);
 
-        Intent data = getIntent();
+        data = getIntent();
         viewnote_title.setText(data.getStringExtra("title"));
         viewnote_content.setText(data.getStringExtra("content"));
 
@@ -35,7 +36,7 @@ public class ViewNoteActivity extends AppCompatActivity {
                 intent.putExtra("title", data.getStringExtra("title"));
                 intent.putExtra("content", data.getStringExtra("content"));
                 intent.putExtra("noteId", data.getStringExtra("noteId"));
-                startActivity(intent);
+                view.getContext().startActivity(intent);
             }
         });
     }

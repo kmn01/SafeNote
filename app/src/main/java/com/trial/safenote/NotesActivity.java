@@ -127,7 +127,7 @@ public class NotesActivity extends AppCompatActivity {
                                 }).addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(view.getContext(), "Note Deletion Failed", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(view.getContext(), "Delete Note Failed", Toast.LENGTH_SHORT).show();
                                     }
                                 });
                                 return false;

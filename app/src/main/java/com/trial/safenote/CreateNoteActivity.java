@@ -61,8 +61,8 @@ public class CreateNoteActivity extends AppCompatActivity {
                 documentReference.set(note).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        Toast.makeText(getApplicationContext(), "Saved Note", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(CreateNoteActivity.this, NotesActivity.class));
+                        Toast.makeText(getApplicationContext(), "Created Note", Toast.LENGTH_SHORT).show();
+                        view.getContext().startActivity(new Intent(CreateNoteActivity.this, NotesActivity.class));
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
