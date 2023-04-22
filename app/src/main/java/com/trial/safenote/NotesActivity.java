@@ -25,9 +25,12 @@ import android.widget.Toolbar;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
@@ -78,10 +81,15 @@ public class NotesActivity extends AppCompatActivity {
                 holder.notetitle.setText(model.getTitle());
                 holder.notecontent.setText(model.getContent());
 
+                String noteId = noteAdapter.getSnapshots().getSnapshot(position).getId();
+
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(view.getContext(), ViewNoteActivity.class);
+                        intent.putExtra("title", model.getTitle());
+                        intent.putExtra("content", model.getContent());
+                        intent.putExtra("noteId", noteId);
                         view.getContext().startActivity(intent);
                     }
                 });
@@ -96,6 +104,9 @@ public class NotesActivity extends AppCompatActivity {
                             @Override
                             public boolean onMenuItemClick(MenuItem menuItem) {
                                 Intent intent = new Intent(view.getContext(), EditNoteActivity.class);
+                                intent.putExtra("title", model.getTitle());
+                                intent.putExtra("content", model.getContent());
+                                intent.putExtra("noteId", noteId);
                                 view.getContext().startActivity(intent);
                                 return false;
                             }
@@ -103,7 +114,22 @@ public class NotesActivity extends AppCompatActivity {
                         popupMenu.getMenu().add("Delete").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                             @Override
                             public boolean onMenuItemClick(MenuItem menuItem) {
-                                Toast.makeText(view.getContext(), "Note Deleted", Toast.LENGTH_SHORT).show();
+                                DocumentReference documentReference = firebaseFirestore
+                                        .collection("notes")
+                                        .document(firebaseUser.getUid())
+                                        .collection("usernotes")
+                                        .document(noteId);
+                                documentReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Toast.makeText(view.getContext(), "Note Deleted", Toast.LENGTH_SHORT).show();
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(view.getContext(), "Note Deletion Failed", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                                 return false;
                             }
                         });
