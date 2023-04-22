@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CreateNoteActivity">
+    tools:context=".EditNoteActivity">
 
     <EditText
         android:layout_width="match_parent"
@@ -18,8 +18,7 @@
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="@color/black"
-        android:hint="Title"
-        android:id="@+id/createnote_title">
+        android:id="@+id/editnote_title">
     </EditText>
 
     <EditText
@@ -34,13 +33,12 @@
         android:paddingRight="10dp"
         android:textSize="15sp"
         android:textColor="@color/black"
-        android:hint="Note"
-        android:layout_below="@id/createnote_title"
-        android:id="@+id/createnote_content">
+        android:layout_below="@id/editnote_title"
+        android:id="@+id/editnote_content">
     </EditText>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/savenote"
+        android:id="@+id/saveeditednote"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

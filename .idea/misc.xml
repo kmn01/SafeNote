@@ -4,8 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Kirthana/Downloads/SafeNote/app/src/main/res/layout/activity_create_note.xml" value="0.1" />
+        <entry key="..\:/Users/Kirthana/Downloads/SafeNote/app/src/main/res/layout/activity_edit_note.xml" value="0.15806159420289856" />
         <entry key="..\:/Users/Kirthana/Downloads/SafeNote/app/src/main/res/layout/activity_main.xml" value="0.15806159420289856" />
         <entry key="..\:/Users/Kirthana/Downloads/SafeNote/app/src/main/res/layout/activity_notes.xml" value="0.1" />
+        <entry key="..\:/Users/Kirthana/Downloads/SafeNote/app/src/main/res/layout/activity_view_note.xml" value="0.15806159420289856" />
         <entry key="..\:/Users/Kirthana/Downloads/SafeNote/app/src/main/res/layout/notes_layout.xml" value="0.15806159420289856" />
         <entry key="..\:/Users/Kirthana/Downloads/SafeNote/app/src/main/res/menu/logout_menu.xml" value="0.17552083333333332" />
       </map>

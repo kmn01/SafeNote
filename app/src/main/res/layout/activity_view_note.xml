@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CreateNoteActivity">
+    tools:context=".ViewNoteActivity">
 
-    <EditText
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginLeft="10dp"
@@ -18,11 +18,11 @@
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="@color/black"
-        android:hint="Title"
-        android:id="@+id/createnote_title">
-    </EditText>
+        android:text="Note Title"
+        android:id="@+id/viewnote_title">
+    </TextView>
 
-    <EditText
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
@@ -34,13 +34,13 @@
         android:paddingRight="10dp"
         android:textSize="15sp"
         android:textColor="@color/black"
-        android:hint="Note"
-        android:layout_below="@id/createnote_title"
-        android:id="@+id/createnote_content">
-    </EditText>
+        android:layout_below="@id/viewnote_title"
+        android:text="Note content"
+        android:id="@+id/viewnote_content">
+    </TextView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/savenote"
+        android:id="@+id/editnotefab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -49,7 +49,7 @@
         android:layout_marginBottom="16dp"
         app:maxImageSize="36dp"
         android:background="@color/white"
-        android:src="@drawable/ic_baseline_check_24">
+        android:src="@drawable/ic_baseline_edit_24">
     </com.google.android.material.floatingactionbutton.FloatingActionButton>
 
 </RelativeLayout>
