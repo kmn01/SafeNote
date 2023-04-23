@@ -27,10 +27,13 @@ public class EditNoteActivity extends AppCompatActivity {
     private FloatingActionButton updatenotebutton;
 
     private Intent data;
+    private String status;
+    private String title;
+    private String content;
 
-    FirebaseAuth firebaseAuth;
-    FirebaseUser firebaseUser;
-    FirebaseFirestore firebaseFirestore;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
+    private FirebaseFirestore firebaseFirestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +49,9 @@ public class EditNoteActivity extends AppCompatActivity {
         firebaseUser = firebaseAuth.getInstance().getCurrentUser();
 
         data = getIntent();
-        String title = data.getStringExtra("title");
-        String content = data.getStringExtra("content");
+        title = data.getStringExtra("title");
+        content = data.getStringExtra("content");
+        status = data.getStringExtra("status");
         editnote_title.setText(title);
         editnote_content.setText(content);
 
@@ -56,11 +60,32 @@ public class EditNoteActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String updated_title = editnote_title.getText().toString();
                 String updated_content = editnote_content.getText().toString();
-                DocumentReference documentReference = firebaseFirestore
-                        .collection("notes")
-                        .document(firebaseUser.getUid())
-                        .collection("usernotes")
-                        .document(data.getStringExtra("noteId"));
+                DocumentReference documentReference;
+                switch (status) {
+                    case "protected": {
+                        documentReference = firebaseFirestore
+                                .collection("notes")
+                                .document(firebaseUser.getUid())
+                                .collection("protectedusernotes")
+                                .document(data.getStringExtra("noteId"));
+                        break;
+                    }
+                    case "deleted": {
+                        documentReference = firebaseFirestore
+                                .collection("notes")
+                                .document(firebaseUser.getUid())
+                                .collection("deletedusernotes")
+                                .document(data.getStringExtra("noteId"));
+                        break;
+                    }
+                    default: {
+                        documentReference = firebaseFirestore
+                                .collection("notes")
+                                .document(firebaseUser.getUid())
+                                .collection("usernotes")
+                                .document(data.getStringExtra("noteId"));
+                    }
+                }
                 Map<String, Object> note = new HashMap<>();
                 note.put("title", updated_title);
                 note.put("content", updated_content);
@@ -68,7 +93,18 @@ public class EditNoteActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void unused) {
                         Toast.makeText(view.getContext(), "Updated Note", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(EditNoteActivity.this, NotesActivity.class));
+                        switch(status) {
+                            case "protected": {
+                                startActivity(new Intent(EditNoteActivity.this, ProtectedNotesActivity.class));
+                                break;
+                            }
+                            case "deleted": {
+                                startActivity(new Intent(EditNoteActivity.this, TrashActivity.class));
+                                break;
+                            }
+                            default:
+                                startActivity(new Intent(EditNoteActivity.this, NotesActivity.class));
+                        }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -78,5 +114,21 @@ public class EditNoteActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        switch(status) {
+            case "protected": {
+                startActivity(new Intent(EditNoteActivity.this, ProtectedNotesActivity.class));
+                break;
+            }
+            case "deleted": {
+                startActivity(new Intent(EditNoteActivity.this, TrashActivity.class));
+                break;
+            }
+            default:
+                startActivity(new Intent(EditNoteActivity.this, NotesActivity.class));
+        }
     }
 }

@@ -17,6 +17,7 @@ public class ViewNoteActivity extends AppCompatActivity {
     private TextView viewnote_title;
     private TextView viewnote_content;
     private Intent data;
+    private String status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +31,7 @@ public class ViewNoteActivity extends AppCompatActivity {
         data = getIntent();
         viewnote_title.setText(data.getStringExtra("title"));
         viewnote_content.setText(data.getStringExtra("content"));
+        status = data.getStringExtra("status");
 
         editnotebutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,6 +40,7 @@ public class ViewNoteActivity extends AppCompatActivity {
                 intent.putExtra("title", data.getStringExtra("title"));
                 intent.putExtra("content", data.getStringExtra("content"));
                 intent.putExtra("noteId", data.getStringExtra("noteId"));
+                intent.putExtra("status", data.getStringExtra("status"));
                 view.getContext().startActivity(intent);
             }
         });
@@ -45,6 +48,17 @@ public class ViewNoteActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(ViewNoteActivity.this, NotesActivity.class));
+        switch(status) {
+            case "protected": {
+                startActivity(new Intent(ViewNoteActivity.this, ProtectedNotesActivity.class));
+                break;
+            }
+            case "deleted": {
+                startActivity(new Intent(ViewNoteActivity.this, TrashActivity.class));
+                break;
+            }
+            default:
+                startActivity(new Intent(ViewNoteActivity.this, NotesActivity.class));
+        }
     }
 }

@@ -35,9 +35,9 @@ import java.util.Map;
 
 public class TrashActivity extends BaseActivity {
 
-    ActivityTrashBinding trashBinding;
-    RecyclerView recyclerView;
-    StaggeredGridLayoutManager staggeredGridLayoutManager;
+    private ActivityTrashBinding trashBinding;
+    private RecyclerView recyclerView;
+    private StaggeredGridLayoutManager staggeredGridLayoutManager;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
@@ -83,6 +83,7 @@ public class TrashActivity extends BaseActivity {
 //                        intent.putExtra("title", model.getTitle());
 //                        intent.putExtra("content", model.getContent());
 //                        intent.putExtra("noteId", noteId);
+//                        intent.putExtra("status", "deleted");
 //                        view.getContext().startActivity(intent);
 //                    }
 //                });

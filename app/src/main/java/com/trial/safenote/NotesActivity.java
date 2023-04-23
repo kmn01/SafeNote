@@ -99,6 +99,7 @@ public class NotesActivity extends BaseActivity {
                         intent.putExtra("title", model.getTitle());
                         intent.putExtra("content", model.getContent());
                         intent.putExtra("noteId", noteId);
+                        intent.putExtra("status", "general");
                         view.getContext().startActivity(intent);
                     }
                 });
@@ -116,7 +117,48 @@ public class NotesActivity extends BaseActivity {
                                 intent.putExtra("title", model.getTitle());
                                 intent.putExtra("content", model.getContent());
                                 intent.putExtra("noteId", noteId);
+                                intent.putExtra("status", "general");
                                 view.getContext().startActivity(intent);
+                                return false;
+                            }
+                        });
+                        popupMenu.getMenu().add("Mark as Protected").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem menuItem) {
+                                DocumentReference documentReference = firebaseFirestore
+                                        .collection("notes")
+                                        .document(firebaseUser.getUid())
+                                        .collection("protectedusernotes")
+                                        .document();
+                                Map<String, Object> note = new HashMap<>();
+                                note.put("title", model.getTitle());
+                                note.put("content", model.getContent());
+                                documentReference.set(note).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(getApplicationContext(), "Mark as Protected Failed", Toast.LENGTH_SHORT).show();
+                                    }
+                                }).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        DocumentReference documentReference = firebaseFirestore
+                                                .collection("notes")
+                                                .document(firebaseUser.getUid())
+                                                .collection("usernotes")
+                                                .document(noteId);
+                                        documentReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void unused) {
+                                                Toast.makeText(view.getContext(), "Note Marked as Protected", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Toast.makeText(view.getContext(), "Mark as Protected Failed", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                    }
+                                });
                                 return false;
                             }
                         });
