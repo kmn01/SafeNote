@@ -15,12 +15,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class BaseActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private FloatingActionButton createnotefab;
     private DrawerLayout drawer;
     private FirebaseAuth firebaseAuth;
 
@@ -44,6 +46,14 @@ public class BaseActivity extends AppCompatActivity
         toggle.syncState();
 
         firebaseAuth = FirebaseAuth.getInstance();
+
+        createnotefab = findViewById(R.id.createnotefab);
+        createnotefab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), CreateNoteActivity.class));
+            }
+        });
     }
 
     @Override
@@ -55,9 +65,9 @@ public class BaseActivity extends AppCompatActivity
             case R.id.nav_protectednotes:
                 startActivity(new Intent(getApplicationContext(), ProtectedNotesActivity.class));
                 break;
-//            case R.id.nav_trash:
-//                startActivity(new Intent(getApplicationContext(), TrashActivity.class));
-//                break;
+            case R.id.nav_trash:
+                startActivity(new Intent(getApplicationContext(), TrashActivity.class));
+                break;
 //            case R.id.nav_settings:
 //                startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
 //                break;

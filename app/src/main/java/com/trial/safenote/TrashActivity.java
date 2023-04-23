@@ -2,48 +2,40 @@ package com.trial.safenote;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupMenu;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.trial.safenote.databinding.ActivityNotesBinding;
+import com.trial.safenote.databinding.ActivityTrashBinding;
 
 import java.util.HashMap;
 import java.util.Map;
 
-//public class NotesActivity extends AppCompatActivity {
-public class NotesActivity extends BaseActivity {
+public class TrashActivity extends BaseActivity {
 
+    ActivityTrashBinding trashBinding;
     RecyclerView recyclerView;
     StaggeredGridLayoutManager staggeredGridLayoutManager;
 
@@ -52,21 +44,12 @@ public class NotesActivity extends BaseActivity {
     private FirebaseFirestore firebaseFirestore;
     private FirestoreRecyclerAdapter<NotesModel, NoteViewHolder> noteAdapter;
 
-    ActivityNotesBinding activityNotesBinding;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activityNotesBinding = ActivityNotesBinding.inflate(getLayoutInflater());
-        setContentView(activityNotesBinding.getRoot());
-        changeActivityTitle("My Notes");
-//        setContentView(R.layout.activity_notes);
-//        setContentView(R.layout.activity_notes_layout);
-//        getSupportActionBar().setTitle("My Notes");
-
-//        toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//        getSupportActionBar().setTitle("My Notes");
+        trashBinding = ActivityTrashBinding.inflate(getLayoutInflater());
+        setContentView(trashBinding.getRoot());
+        changeActivityTitle("Trash");
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -74,7 +57,7 @@ public class NotesActivity extends BaseActivity {
 
         Query query = firebaseFirestore.collection("notes")
                 .document(firebaseUser.getUid())
-                .collection("usernotes")
+                .collection("deletedusernotes")
                 .orderBy("title", Query.Direction.ASCENDING);
         FirestoreRecyclerOptions<NotesModel> allusernotes =
                 new FirestoreRecyclerOptions.Builder<NotesModel>()
@@ -92,16 +75,17 @@ public class NotesActivity extends BaseActivity {
 
                 String noteId = noteAdapter.getSnapshots().getSnapshot(position).getId();
 
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(view.getContext(), ViewNoteActivity.class);
-                        intent.putExtra("title", model.getTitle());
-                        intent.putExtra("content", model.getContent());
-                        intent.putExtra("noteId", noteId);
-                        view.getContext().startActivity(intent);
-                    }
-                });
+////                Note in trash cannot be viewed
+//                holder.itemView.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        Intent intent = new Intent(view.getContext(), ViewNoteActivity.class);
+//                        intent.putExtra("title", model.getTitle());
+//                        intent.putExtra("content", model.getContent());
+//                        intent.putExtra("noteId", noteId);
+//                        view.getContext().startActivity(intent);
+//                    }
+//                });
 
                 popupbutton.setOnClickListener(new View.OnClickListener() {
                     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -109,24 +93,13 @@ public class NotesActivity extends BaseActivity {
                     public void onClick(View view) {
                         PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
                         popupMenu.setGravity(Gravity.END);
-                        popupMenu.getMenu().add("Edit").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                            @Override
-                            public boolean onMenuItemClick(MenuItem menuItem) {
-                                Intent intent = new Intent(view.getContext(), EditNoteActivity.class);
-                                intent.putExtra("title", model.getTitle());
-                                intent.putExtra("content", model.getContent());
-                                intent.putExtra("noteId", noteId);
-                                view.getContext().startActivity(intent);
-                                return false;
-                            }
-                        });
-                        popupMenu.getMenu().add("Move to Trash").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        popupMenu.getMenu().add("Restore").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                             @Override
                             public boolean onMenuItemClick(MenuItem menuItem) {
                                 DocumentReference documentReference = firebaseFirestore
                                         .collection("notes")
                                         .document(firebaseUser.getUid())
-                                        .collection("deletedusernotes")
+                                        .collection("usernotes")
                                         .document();
                                 Map<String, Object> note = new HashMap<>();
                                 note.put("title", model.getTitle());
@@ -134,7 +107,7 @@ public class NotesActivity extends BaseActivity {
                                 documentReference.set(note).addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(getApplicationContext(), "Move to Trash Failed", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(), "Restore Note Failed", Toast.LENGTH_SHORT).show();
                                     }
                                 }).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
@@ -142,19 +115,41 @@ public class NotesActivity extends BaseActivity {
                                         DocumentReference documentReference = firebaseFirestore
                                                 .collection("notes")
                                                 .document(firebaseUser.getUid())
-                                                .collection("usernotes")
+                                                .collection("deletedusernotes")
                                                 .document(noteId);
                                         documentReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void unused) {
-                                                Toast.makeText(view.getContext(), "Note Moved to Trash", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(view.getContext(), "Note Restored", Toast.LENGTH_SHORT).show();
                                             }
                                         }).addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
-                                                Toast.makeText(view.getContext(), "Move to Trash Failed", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(view.getContext(), "Delete Restore Failed", Toast.LENGTH_SHORT).show();
                                             }
                                         });
+                                    }
+                                });
+                                return false;
+                            }
+                        });
+                        popupMenu.getMenu().add("Delete Forever").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem menuItem) {
+                                DocumentReference documentReference = firebaseFirestore
+                                        .collection("notes")
+                                        .document(firebaseUser.getUid())
+                                        .collection("deletedusernotes")
+                                        .document(noteId);
+                                documentReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Toast.makeText(view.getContext(), "Note Deleted Forever", Toast.LENGTH_SHORT).show();
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(view.getContext(), "Delete Note Failed", Toast.LENGTH_SHORT).show();
                                     }
                                 });
                                 return false;
@@ -164,7 +159,6 @@ public class NotesActivity extends BaseActivity {
                     }
                 });
             }
-
             @NonNull
             @Override
             public NoteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -182,20 +176,6 @@ public class NotesActivity extends BaseActivity {
         recyclerView.setAdapter(noteAdapter);
     }
 
-//    public class NoteViewHolder extends RecyclerView.ViewHolder {
-//
-//        private TextView notetitle;
-//        private TextView notecontent;
-//        private TextView trial;
-//        LinearLayout note;
-//
-//        public NoteViewHolder(@NonNull View itemView) {
-//            super(itemView);
-//            notetitle = itemView.findViewById(R.id.notetitle);
-//            notecontent = itemView.findViewById(R.id.notecontent);
-//        }
-//    }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -210,40 +190,8 @@ public class NotesActivity extends BaseActivity {
         }
     }
 
-//    // logout menu
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.logout_menu, menu);
-//        return true;
-//    }
-//
-//    // logout functionality
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        switch(item.getItemId()){
-//            case R.id.logout:
-//                firebaseAuth.signOut();
-//                finish();
-//                startActivity(new Intent(NotesActivity.this, MainActivity.class));
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
-
     @Override
     public void onBackPressed() {
-        new AlertDialog.Builder(this)
-                .setTitle("Exit app?")
-                .setMessage("Are you sure you want to exit the app?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Exit the app
-                        finishAffinity();
-                    }
-                })
-                .setNegativeButton("No", null)
-                .show();
+        startActivity(new Intent(TrashActivity.this, NotesActivity.class));
     }
-
 }
