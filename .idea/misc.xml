@@ -3,13 +3,24 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Kirthana/Downloads/SafeNote/app/src/main/res/drawable/side_nav_bar.xml" value="0.19166666666666668" />
+        <entry key="..\:/Users/Kirthana/Downloads/SafeNote/app/src/main/res/layout/activity_base.xml" value="0.15806159420289856" />
         <entry key="..\:/Users/Kirthana/Downloads/SafeNote/app/src/main/res/layout/activity_create_note.xml" value="0.1" />
         <entry key="..\:/Users/Kirthana/Downloads/SafeNote/app/src/main/res/layout/activity_edit_note.xml" value="0.15806159420289856" />
         <entry key="..\:/Users/Kirthana/Downloads/SafeNote/app/src/main/res/layout/activity_main.xml" value="0.15806159420289856" />
         <entry key="..\:/Users/Kirthana/Downloads/SafeNote/app/src/main/res/layout/activity_notes.xml" value="0.1" />
+        <entry key="..\:/Users/Kirthana/Downloads/SafeNote/app/src/main/res/layout/activity_protected_notes.xml" value="0.15806159420289856" />
         <entry key="..\:/Users/Kirthana/Downloads/SafeNote/app/src/main/res/layout/activity_view_note.xml" value="0.15806159420289856" />
+        <entry key="..\:/Users/Kirthana/Downloads/SafeNote/app/src/main/res/layout/app_bar_main.xml" value="0.15806159420289856" />
+        <entry key="..\:/Users/Kirthana/Downloads/SafeNote/app/src/main/res/layout/content_layout.xml" value="0.15806159420289856" />
+        <entry key="..\:/Users/Kirthana/Downloads/SafeNote/app/src/main/res/layout/nav_header_layout.xml" value="0.15806159420289856" />
+        <entry key="..\:/Users/Kirthana/Downloads/SafeNote/app/src/main/res/layout/nav_header_main.xml" value="0.15806159420289856" />
+        <entry key="..\:/Users/Kirthana/Downloads/SafeNote/app/src/main/res/layout/navigation_drawer.xml" value="0.1" />
         <entry key="..\:/Users/Kirthana/Downloads/SafeNote/app/src/main/res/layout/notes_layout.xml" value="0.15806159420289856" />
+        <entry key="..\:/Users/Kirthana/Downloads/SafeNote/app/src/main/res/layout/toolbar.xml" value="0.15806159420289856" />
         <entry key="..\:/Users/Kirthana/Downloads/SafeNote/app/src/main/res/menu/logout_menu.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/Kirthana/Downloads/SafeNote/app/src/main/res/menu/nav_drawer_menu.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/Kirthana/Downloads/SafeNote/app/src/main/res/menu/navigation_drawer.xml" value="0.17552083333333332" />
       </map>
     </option>
   </component>

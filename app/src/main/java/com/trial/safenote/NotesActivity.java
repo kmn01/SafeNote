@@ -2,14 +2,17 @@ package com.trial.safenote;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,35 +24,48 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.trial.safenote.databinding.ActivityNotesBinding;
 
-public class NotesActivity extends AppCompatActivity {
+//public class NotesActivity extends AppCompatActivity {
+public class NotesActivity extends BaseActivity {
 
     FloatingActionButton createnotefab;
     RecyclerView recyclerView;
     StaggeredGridLayoutManager staggeredGridLayoutManager;
+    Toolbar toolbar;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
     private FirebaseFirestore firebaseFirestore;
     private FirestoreRecyclerAdapter<NotesModel, NoteViewHolder> noteAdapter;
 
+    ActivityNotesBinding activityNotesBinding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notes);
-        getSupportActionBar().setTitle("My Notes");
+        activityNotesBinding = ActivityNotesBinding.inflate(getLayoutInflater());
+        setContentView(activityNotesBinding.getRoot());
+        changeActivityTitle("My Notes");
+//        setContentView(R.layout.activity_notes);
+//        setContentView(R.layout.activity_notes_layout);
+//        getSupportActionBar().setTitle("My Notes");
+
+//        toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//        getSupportActionBar().setTitle("My Notes");
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -183,23 +199,40 @@ public class NotesActivity extends AppCompatActivity {
         }
     }
 
-    // logout menu
+//    // logout menu
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.logout_menu, menu);
+//        return true;
+//    }
+//
+//    // logout functionality
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        switch(item.getItemId()){
+//            case R.id.logout:
+//                firebaseAuth.signOut();
+//                finish();
+//                startActivity(new Intent(NotesActivity.this, MainActivity.class));
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
+
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.logout_menu, menu);
-        return true;
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("Exit app?")
+                .setMessage("Are you sure you want to exit the app?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Exit the app
+                        finishAffinity();
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 
-    // logout functionality
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch(item.getItemId()){
-            case R.id.logout:
-                firebaseAuth.signOut();
-                finish();
-                startActivity(new Intent(NotesActivity.this, MainActivity.class));
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

@@ -10,25 +10,32 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SafeNote">
         <activity
-            android:name=".ViewNoteActivity"
-            android:parentActivityName=".NotesActivity"
+            android:name=".ProtectedNotesActivity"
             android:exported="true" />
         <activity
-            android:name=".EditNoteActivity"
-            android:parentActivityName=".NotesActivity"
+            android:name=".BaseActivity"
             android:exported="true" />
+        <activity
+            android:name=".ViewNoteActivity"
+            android:exported="true"
+            android:parentActivityName=".NotesActivity" />
+        <activity
+            android:name=".EditNoteActivity"
+            android:exported="true"
+            android:parentActivityName=".NotesActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".CreateNoteActivity"
-            android:parentActivityName=".NotesActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:parentActivityName=".NotesActivity" />
         <activity
             android:name=".NotesActivity"
             android:exported="true" />

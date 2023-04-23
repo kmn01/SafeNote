@@ -110,9 +110,9 @@ public class MainActivity extends AppCompatActivity {
                     String email = sharedPreferences.getString("email", "");
                     String password = sharedPreferences.getString("password", "");
                     performAuth(email, password);
-                    Toast.makeText(getApplicationContext(),
-                            "Authentication succeeded!", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(MainActivity.this, NotesActivity.class));
+//                    Toast.makeText(getApplicationContext(),
+//                            "Authentication succeeded!", Toast.LENGTH_SHORT).show();
+//                    startActivity(new Intent(MainActivity.this, NotesActivity.class));
             }
 
             @Override
@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
                     editor.putBoolean("isLogin", true);
                     editor.apply();
                     progressDialog.dismiss();
-//                    startActivity(new Intent(MainActivity.this, NotesActivity.class));
+                    startActivity(new Intent(MainActivity.this, NotesActivity.class));
                     Toast.makeText(MainActivity.this, "Login Sucessful", Toast.LENGTH_SHORT).show();
                 } else{
                     progressDialog.dismiss();

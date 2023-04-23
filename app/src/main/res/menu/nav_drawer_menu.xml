@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_baseline_notes_24"
+            android:title="@string/menu_home" />
+        <item
+            android:id="@+id/nav_protectednotes"
+            android:icon="@drawable/ic_baseline_lock_24"
+            android:title="@string/menu_protectednotes" />
+        <item
+            android:id="@+id/nav_trash"
+            android:icon="@drawable/ic_baseline_restore_from_trash_24"
+            android:title="@string/menu_trash" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_baseline_settings_24"
+            android:title="@string/menu_settings" />
+        <item
+            android:id="@+id/nav_help"
+            android:icon="@drawable/ic_baseline_help_24"
+            android:title="@string/menu_help" />
+    </group>
+</menu>
