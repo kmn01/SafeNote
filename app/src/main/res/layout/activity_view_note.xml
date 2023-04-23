@@ -40,6 +40,19 @@
     </TextView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/protectnotefab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="top|end"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:layout_marginTop="@dimen/fab_margin"
+        android:background="@color/white"
+        android:src="@drawable/ic_baseline_lock_24"
+        app:maxImageSize="36dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/editnotefab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
