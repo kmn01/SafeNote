@@ -2,7 +2,6 @@ package com.trial.safenote;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -27,7 +26,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.trial.safenote.databinding.ActivityNotesBinding;
 import com.trial.safenote.databinding.ActivityTrashBinding;
 
 import java.util.HashMap;
@@ -163,7 +161,7 @@ public class TrashActivity extends BaseActivity {
             @NonNull
             @Override
             public NoteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.notes_layout, parent, false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.notes_card_layout, parent, false);
                 return new NoteViewHolder(view);
 
             }

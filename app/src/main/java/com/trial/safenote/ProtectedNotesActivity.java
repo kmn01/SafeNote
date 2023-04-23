@@ -2,7 +2,6 @@ package com.trial.safenote;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -27,7 +26,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.trial.safenote.databinding.ActivityNotesBinding;
 import com.trial.safenote.databinding.ActivityProtectedNotesBinding;
 
 import java.util.HashMap;
@@ -71,7 +69,7 @@ public class ProtectedNotesActivity extends BaseActivity {
                 ImageView popupbutton = holder.itemView.findViewById(R.id.popupmenubutton);
 
                 holder.getNotetitle().setText(model.getTitle());
-                holder.getNotecontent().setText(model.getContent());
+//                holder.getNotecontent().setText(model.getContent());
 
                 String noteId = noteAdapter.getSnapshots().getSnapshot(position).getId();
 
@@ -192,13 +190,13 @@ public class ProtectedNotesActivity extends BaseActivity {
             @NonNull
             @Override
             public NoteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.notes_layout, parent, false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.protected_notes_card_layout, parent, false);
                 return new NoteViewHolder(view);
 
             }
         };
 
-        recyclerView = findViewById(R.id.notes_layout);
+        recyclerView = findViewById(R.id.protected_notes_layout);
         recyclerView.setHasFixedSize(true);
         staggeredGridLayoutManager =
                 new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);

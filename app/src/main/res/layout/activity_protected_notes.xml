@@ -20,7 +20,7 @@
         app:maxImageSize="36dp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/notes_layout"
+        android:id="@+id/protected_notes_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical">
