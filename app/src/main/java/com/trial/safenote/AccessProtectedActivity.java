@@ -22,7 +22,7 @@ import java.util.concurrent.Executor;
 public class AccessProtectedActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE = 1306;
-    ImageView auth_image;
+    Button auth_button;
     private Executor executor;
     private BiometricPrompt biometricPrompt;
     private BiometricPrompt.PromptInfo promptInfo;
@@ -31,7 +31,7 @@ public class AccessProtectedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_access_protected);
-        auth_image = findViewById(R.id.protected_auth);
+        auth_button = findViewById(R.id.protected_authButton);
 
         BiometricManager biometricManager = BiometricManager.from(this);
         switch (biometricManager.canAuthenticate(BIOMETRIC_STRONG | DEVICE_CREDENTIAL)) {
@@ -92,7 +92,7 @@ public class AccessProtectedActivity extends AppCompatActivity {
         // Consider integrating with the keystore to unlock cryptographic operations,
         // if needed by your app.
 
-        auth_image.setOnClickListener(view -> {
+        auth_button.setOnClickListener(view -> {
             biometricPrompt.authenticate(promptInfo);
         });
     }
