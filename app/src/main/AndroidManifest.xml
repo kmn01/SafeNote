@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SafeNote">
         <activity
+            android:name=".ForgotPasswordActivity"
+            android:exported="true" />
+        <activity
+            android:name=".SignupActivity"
+            android:exported="true" />
+        <activity
             android:name=".TrashActivity"
             android:exported="true" />
         <activity

@@ -19,10 +19,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,16 +34,17 @@ import java.util.concurrent.Executor;
 public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE = 1010;
-    ImageView imageViewLogin;
+    private ImageView imageViewLogin;
     private Executor executor;
     private BiometricPrompt biometricPrompt;
     private BiometricPrompt.PromptInfo promptInfo;
-    EditText inputEmail, inputPassword;
-    Button buttonLogin;
-    FirebaseAuth mAuth;
-    FirebaseUser mUser;
-    ProgressDialog progressDialog;
-    SharedPreferences sharedPreferences;
+    private EditText inputEmail, inputPassword;
+    private TextView gotoforgotpassword, gotosignup;
+    private Button buttonLogin;
+    private ProgressDialog progressDialog;
+    private SharedPreferences sharedPreferences;
+    private FirebaseAuth mAuth;
+    private FirebaseUser mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,12 +59,41 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
 
+        gotoforgotpassword = findViewById(R.id.gotoforgotpassword);
+        gotosignup = findViewById(R.id.gotosignup);
+
+//        if(mUser != null){
+//            finish();
+//            startActivity(new Intent(MainActivity.this, NotesActivity.class));
+//        }
+
+        gotoforgotpassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ForgotPasswordActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        gotosignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
+                startActivity(intent);
+            }
+        });
+
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String email = inputEmail.getText().toString();
                 String password = inputPassword.getText().toString();
-                performAuth(email, password);
+                if(email.isEmpty() || password.isEmpty()){
+                    Toast.makeText(getApplicationContext(), "All fields are required", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    performAuth(email, password);
+                }
             }
         });
         sharedPreferences = getSharedPreferences("data", MODE_PRIVATE);
@@ -145,24 +177,33 @@ public class MainActivity extends AppCompatActivity {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()){
+                if (task.isSuccessful() && checkEmailVerification()){
                     SharedPreferences.Editor editor = getSharedPreferences("data", MODE_PRIVATE).edit();
                     editor.putString("email", email);
                     editor.putString("password", password);
                     editor.putBoolean("isLogin", true);
                     editor.apply();
                     progressDialog.dismiss();
-                    startActivity(new Intent(MainActivity.this, NotesActivity.class));
                     Toast.makeText(MainActivity.this, "Login Sucessful", Toast.LENGTH_SHORT).show();
-                } else{
+                    startActivity(new Intent(MainActivity.this, NotesActivity.class));
+                    } else{
                     progressDialog.dismiss();
-                    Toast.makeText(MainActivity.this, ""+task.getException(), Toast.LENGTH_SHORT).show();
+                    mAuth.signOut();
+//                    Toast.makeText(MainActivity.this, ""+task.getException(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
 
-
-
-
+    private boolean checkEmailVerification(){
+        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+        if(firebaseUser.isEmailVerified()){
+            return true;
+        }
+        else{
+            Toast.makeText(MainActivity.this, "Email not verified", Toast.LENGTH_SHORT).show();
+            return false;
+        }
     }
 }

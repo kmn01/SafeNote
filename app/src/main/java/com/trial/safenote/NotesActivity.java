@@ -36,15 +36,15 @@ import java.util.Map;
 //public class NotesActivity extends AppCompatActivity {
 public class NotesActivity extends BaseActivity {
 
-    RecyclerView recyclerView;
-    StaggeredGridLayoutManager staggeredGridLayoutManager;
+    private RecyclerView recyclerView;
+    private StaggeredGridLayoutManager staggeredGridLayoutManager;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
     private FirebaseFirestore firebaseFirestore;
     private FirestoreRecyclerAdapter<NotesModel, NoteViewHolder> noteAdapter;
 
-    ActivityNotesBinding activityNotesBinding;
+    private ActivityNotesBinding activityNotesBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
