@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SafeNote">
         <activity
+            android:name=".AccessProtectedActivity"
+            android:exported="false" />
+        <activity
             android:name=".TrashActivity"
             android:exported="true" />
         <activity
