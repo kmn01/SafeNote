@@ -74,6 +74,44 @@ public class ViewNoteActivity extends AppCompatActivity {
         protectnotebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(status.equals("protected")){
+//                    Toast.makeText(getApplicationContext(), "Already Marked as Protected", Toast.LENGTH_SHORT).show();
+                    DocumentReference documentReference = firebaseFirestore
+                            .collection("notes")
+                            .document(firebaseUser.getUid())
+                            .collection("usernotes")
+                            .document();
+                    Map<String, Object> note = new HashMap<>();
+                    note.put("title", title);
+                    note.put("content", content);
+                    documentReference.set(note).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getApplicationContext(), "Restore Note Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            DocumentReference documentReference = firebaseFirestore
+                                    .collection("notes")
+                                    .document(firebaseUser.getUid())
+                                    .collection("protectedusernotes")
+                                    .document(noteId);
+                            documentReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Toast.makeText(view.getContext(), "Note Protection Removed", Toast.LENGTH_SHORT).show();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(view.getContext(), "Protection Remove Failed", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    });
+                    return;
+                }
                 DocumentReference documentReference = firebaseFirestore
                         .collection("notes")
                         .document(firebaseUser.getUid())

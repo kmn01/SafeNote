@@ -63,7 +63,7 @@ public class BaseActivity extends AppCompatActivity
                 startActivity(new Intent(getApplicationContext(), NotesActivity.class));
                 break;
             case R.id.nav_protectednotes:
-                startActivity(new Intent(getApplicationContext(), ProtectedNotesActivity.class));
+                startActivity(new Intent(getApplicationContext(), AccessProtectedActivity.class));
                 break;
             case R.id.nav_trash:
                 startActivity(new Intent(getApplicationContext(), TrashActivity.class));

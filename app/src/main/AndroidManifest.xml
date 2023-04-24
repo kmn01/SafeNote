@@ -16,6 +16,9 @@
             android:name=".SignupActivity"
             android:exported="true" />
         <activity
+            android:name=".AccessProtectedActivity"
+            android:exported="false" />
+        <activity
             android:name=".TrashActivity"
             android:exported="true" />
         <activity
