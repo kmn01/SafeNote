@@ -17,6 +17,7 @@
         android:layout_marginBottom="@dimen/fab_margin"
         android:background="@color/white"
         android:src="@drawable/ic_baseline_add_24"
+        android:backgroundTint="#0077b6"
         app:maxImageSize="36dp" />
 
     <androidx.recyclerview.widget.RecyclerView
