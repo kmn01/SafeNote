@@ -1,13 +1,9 @@
 package com.trial.safenote;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -21,9 +17,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.security.InvalidAlgorithmParameterException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -79,7 +72,6 @@ public class SignupActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()){
                                 Toast.makeText(getApplicationContext(), "Registration Successful", Toast.LENGTH_SHORT).show();
-                                storeKeyIfNotExists(getApplicationContext());
                                 sendEmailVerification();
                             }
                             else{
@@ -122,26 +114,5 @@ public class SignupActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Failed to Send Verification Email.", Toast.LENGTH_SHORT).show();
         }
     }
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    public static void storeKeyIfNotExists(Context context) {
-        String keyGeneratedFlag = "keyGeneratedFlag";
-        SharedPreferences prefs = context.getSharedPreferences("SafeNotePrefsFile", Context.MODE_PRIVATE);
-        boolean keyGenerated = prefs.getBoolean(keyGeneratedFlag, false);
 
-        if (!keyGenerated) {
-            // Key not generated, generate it now
-            try {
-                Encryption.storeKey();
-                prefs.edit().putBoolean(keyGeneratedFlag, true).apply();
-            } catch (NoSuchProviderException e) {
-                e.printStackTrace();
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (InvalidAlgorithmParameterException e) {
-                e.printStackTrace();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
 }
