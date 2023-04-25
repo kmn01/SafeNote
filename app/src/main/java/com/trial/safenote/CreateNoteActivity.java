@@ -49,15 +49,20 @@ public class CreateNoteActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String title = createnotetitle.getText().toString();
                 String content = createnotecontent.getText().toString();
-
                 DocumentReference documentReference = firebaseFirestore
                         .collection("notes")
                         .document(firebaseUser.getUid())
                         .collection("usernotes")
                         .document();
                 Map<String, Object> note = new HashMap<>();
-                note.put("title", title);
-                note.put("content", content);
+//                note.put("title", title);
+//                note.put("content", content);
+                try {
+                    note.put("title", Encryption.encryptText(title));
+                    note.put("content", Encryption.encryptText(content));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 documentReference.set(note).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {

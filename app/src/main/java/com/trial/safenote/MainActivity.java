@@ -1,6 +1,7 @@
 package com.trial.safenote;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricManager;
 import androidx.biometric.BiometricPrompt;
@@ -10,8 +11,10 @@ import static androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRON
 import static androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -29,6 +32,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.security.InvalidAlgorithmParameterException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.util.concurrent.Executor;
 
 public class MainActivity extends AppCompatActivity {
@@ -46,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +62,21 @@ public class MainActivity extends AppCompatActivity {
         inputPassword = findViewById(R.id.inputPassword);
         buttonLogin = findViewById(R.id.buttonLogin);
         progressDialog = new ProgressDialog(this);
+
+        try {
+            storeKeyIfNotExists(getApplicationContext());
+            String et = Encryption.encryptText("hello how are you!");
+            System.out.println("Encrypted text ==== " + et);
+            System.out.println("Decrypted text ==== " + Encryption.decryptText(et));
+        } catch (NoSuchProviderException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (InvalidAlgorithmParameterException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
@@ -157,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                .setTitle("Biometric LoginActivity for my app")
+                .setTitle("Biometric Login")
                 .setSubtitle("Log in using your biometric credential")
                 .setNegativeButtonText("Use account password")
                 .build();
@@ -204,6 +226,29 @@ public class MainActivity extends AppCompatActivity {
         else{
             Toast.makeText(MainActivity.this, "Email not verified", Toast.LENGTH_SHORT).show();
             return false;
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public static void storeKeyIfNotExists(Context context) {
+        String keyGeneratedFlag = "keyGeneratedFlag";
+        SharedPreferences prefs = context.getSharedPreferences("SafeNotePrefsFile", Context.MODE_PRIVATE);
+        boolean keyGenerated = prefs.getBoolean(keyGeneratedFlag, false);
+
+        if (!keyGenerated) {
+            // Key not generated, generate it now
+            try {
+                Encryption.storeKey();
+                prefs.edit().putBoolean(keyGeneratedFlag, true).apply();
+            } catch (NoSuchProviderException e) {
+                e.printStackTrace();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (InvalidAlgorithmParameterException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

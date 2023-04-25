@@ -68,8 +68,16 @@ public class ProtectedNotesActivity extends BaseActivity {
 
                 ImageView popupbutton = holder.itemView.findViewById(R.id.popupmenubutton);
 
-                holder.getNotetitle().setText(model.getTitle());
-//                holder.getNotecontent().setText(model.getContent());
+//                holder.getNotetitle().setText(model.getTitle());
+////                holder.getNotecontent().setText(model.getContent());
+                try {
+                    String title = model.getTitle();
+//                    String content = model.getContent();
+                    holder.getNotetitle().setText(Encryption.decryptText(title));
+//                    holder.getNotecontent().setText(Encryption.decryptText(content));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 String noteId = noteAdapter.getSnapshots().getSnapshot(position).getId();
 
@@ -149,7 +157,7 @@ public class ProtectedNotesActivity extends BaseActivity {
                                 DocumentReference documentReference = firebaseFirestore
                                         .collection("notes")
                                         .document(firebaseUser.getUid())
-                                        .collection("protectedusernotes")
+                                        .collection("deletedusernotes")
                                         .document();
                                 Map<String, Object> note = new HashMap<>();
                                 note.put("title", model.getTitle());
@@ -165,7 +173,7 @@ public class ProtectedNotesActivity extends BaseActivity {
                                         DocumentReference documentReference = firebaseFirestore
                                                 .collection("notes")
                                                 .document(firebaseUser.getUid())
-                                                .collection("usernotes")
+                                                .collection("protectedusernotes")
                                                 .document(noteId);
                                         documentReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override

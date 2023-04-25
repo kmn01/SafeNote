@@ -49,12 +49,18 @@ public class ViewNoteActivity extends AppCompatActivity {
         protectnotebutton = findViewById(R.id.protectnotefab);
 
         data = getIntent();
-        viewnote_title.setText(data.getStringExtra("title"));
-        viewnote_content.setText(data.getStringExtra("content"));
-        status = data.getStringExtra("status");
         title = data.getStringExtra("title");
         content = data.getStringExtra("content");
         noteId = data.getStringExtra("noteId");
+//        viewnote_title.setText(title);
+//        viewnote_content.setText(content);
+        try {
+            viewnote_title.setText(Encryption.decryptText(title));
+            viewnote_content.setText(Encryption.decryptText(content));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        status = data.getStringExtra("status");
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();

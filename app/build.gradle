@@ -41,10 +41,11 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
-
     implementation 'androidx.biometric:biometric:1.1.0'
     implementation 'com.google.firebase:firebase-auth:21.2.0'
     implementation 'com.google.firebase:firebase-database:20.1.0'
     implementation 'com.google.firebase:firebase-firestore:24.0.0'
     implementation 'com.firebaseui:firebase-ui-firestore:8.0.2'
+
+    implementation 'org.webjars.npm:crypto-js:4.1.1'
 }

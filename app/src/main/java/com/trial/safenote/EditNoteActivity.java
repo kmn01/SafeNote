@@ -52,8 +52,14 @@ public class EditNoteActivity extends AppCompatActivity {
         title = data.getStringExtra("title");
         content = data.getStringExtra("content");
         status = data.getStringExtra("status");
-        editnote_title.setText(title);
-        editnote_content.setText(content);
+//        editnote_title.setText(title);
+//        editnote_content.setText(content);
+        try {
+            editnote_title.setText(Encryption.decryptText(title));
+            editnote_content.setText(Encryption.decryptText(content));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         updatenotebutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,8 +93,14 @@ public class EditNoteActivity extends AppCompatActivity {
                     }
                 }
                 Map<String, Object> note = new HashMap<>();
-                note.put("title", updated_title);
-                note.put("content", updated_content);
+//                note.put("title", updated_title);
+//                note.put("content", updated_content);
+                try {
+                    note.put("title", Encryption.encryptText(updated_title));
+                    note.put("content", Encryption.encryptText(updated_content));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 documentReference.set(note).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
