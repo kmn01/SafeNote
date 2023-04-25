@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
 
         try {
-            storeKeyIfNotExists(getApplicationContext());
             String et = Encryption.encryptText("hello how are you!");
             System.out.println("Encrypted text ==== " + et);
             System.out.println("Decrypted text ==== " + Encryption.decryptText(et));
@@ -226,29 +225,6 @@ public class MainActivity extends AppCompatActivity {
         else{
             Toast.makeText(MainActivity.this, "Email not verified", Toast.LENGTH_SHORT).show();
             return false;
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    public static void storeKeyIfNotExists(Context context) {
-        String keyGeneratedFlag = "keyGeneratedFlag";
-        SharedPreferences prefs = context.getSharedPreferences("SafeNotePrefsFile", Context.MODE_PRIVATE);
-        boolean keyGenerated = prefs.getBoolean(keyGeneratedFlag, false);
-
-        if (!keyGenerated) {
-            // Key not generated, generate it now
-            try {
-                Encryption.storeKey();
-                prefs.edit().putBoolean(keyGeneratedFlag, true).apply();
-            } catch (NoSuchProviderException e) {
-                e.printStackTrace();
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (InvalidAlgorithmParameterException e) {
-                e.printStackTrace();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
     }
 }
