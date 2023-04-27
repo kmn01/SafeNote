@@ -10,24 +10,24 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:layout_marginBottom="150dp"
+        android:layout_marginTop="36dp"
         android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/appname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
             android:layout_marginLeft="30dp"
+            android:layout_marginTop="100dp"
             android:layout_marginRight="30dp"
             android:text="SafeNote"
             android:textColor="#03045e"
-            android:textStyle="bold"
             android:textSize="50sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.144"
             app:layout_constraintStart_toStartOf="parent"
@@ -38,8 +38,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/appname"
-            android:layout_marginTop="30dp"
             android:layout_marginLeft="30dp"
+            android:layout_marginTop="30dp"
             android:layout_marginRight="30dp"
             android:text="Welcome Back!"
             android:textColor="#0077b6"
@@ -49,55 +49,55 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/appname" />
 
-<!--        <EditText-->
-<!--            android:id="@+id/inputEmail"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_below="@+id/welcome"-->
-<!--            android:layout_marginTop="20dp"-->
-<!--            android:layout_marginLeft="30dp"-->
-<!--            android:layout_marginRight="30dp"-->
-<!--            android:layout_centerInParent="true"-->
-<!--            android:height="50dp"-->
-<!--            android:hint="Enter Your Email"-->
-<!--            android:inputType="textEmailAddress"-->
-<!--            app:layout_constraintBottom_toBottomOf="@+id/fingerprintIcon"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintHorizontal_bias="0.0"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="@+id/welcome"-->
-<!--            app:layout_constraintVertical_bias="0.364"-->
-<!--            tools:ignore="SpeakableTextPresentCheck" />-->
+        <!--        <EditText-->
+        <!--            android:id="@+id/inputEmail"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_below="@+id/welcome"-->
+        <!--            android:layout_marginTop="20dp"-->
+        <!--            android:layout_marginLeft="30dp"-->
+        <!--            android:layout_marginRight="30dp"-->
+        <!--            android:layout_centerInParent="true"-->
+        <!--            android:height="50dp"-->
+        <!--            android:hint="Enter Your Email"-->
+        <!--            android:inputType="textEmailAddress"-->
+        <!--            app:layout_constraintBottom_toBottomOf="@+id/fingerprintIcon"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintHorizontal_bias="0.0"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="@+id/welcome"-->
+        <!--            app:layout_constraintVertical_bias="0.364"-->
+        <!--            tools:ignore="SpeakableTextPresentCheck" />-->
 
-<!--        <EditText-->
-<!--            android:id="@+id/inputPassword"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_below="@+id/inputEmail"-->
-<!--            android:layout_marginTop="20dp"-->
-<!--            android:layout_marginLeft="30dp"-->
-<!--            android:layout_marginRight="30dp"-->
-<!--            android:layout_centerInParent="true"-->
-<!--            android:height="50dp"-->
-<!--            android:hint="Enter Your Password"-->
-<!--            android:inputType="textPassword"-->
-<!--            app:passwordToggleEnabled="true"-->
-<!--            app:passwordToggleDrawable="true"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintHorizontal_bias="0.0"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/inputEmail"-->
-<!--            tools:ignore="SpeakableTextPresentCheck" />-->
+        <!--        <EditText-->
+        <!--            android:id="@+id/inputPassword"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_below="@+id/inputEmail"-->
+        <!--            android:layout_marginTop="20dp"-->
+        <!--            android:layout_marginLeft="30dp"-->
+        <!--            android:layout_marginRight="30dp"-->
+        <!--            android:layout_centerInParent="true"-->
+        <!--            android:height="50dp"-->
+        <!--            android:hint="Enter Your Password"-->
+        <!--            android:inputType="textPassword"-->
+        <!--            app:passwordToggleEnabled="true"-->
+        <!--            app:passwordToggleDrawable="true"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintHorizontal_bias="0.0"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/inputEmail"-->
+        <!--            tools:ignore="SpeakableTextPresentCheck" />-->
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/inputEmailLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/welcome"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
             android:layout_centerInParent="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/welcome">
@@ -106,8 +106,8 @@
                 android:id="@+id/inputEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:hint="@string/email_hint"/>
+                android:hint="@string/email_hint"
+                android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -115,22 +115,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/inputEmail"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
             android:layout_centerInParent="true"
-            app:passwordToggleEnabled="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/inputEmailLayout">
+            app:layout_constraintTop_toBottomOf="@+id/inputEmailLayout"
+            app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inputPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/password_hint"
-                android:inputType="textPassword"/>
+                android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
@@ -140,11 +140,11 @@
             android:layout_below="@+id/inputPassword"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:layout_marginTop="20dp"
             android:layout_marginLeft="30dp"
+            android:layout_marginTop="20dp"
             android:layout_marginRight="30dp"
-            android:text="Login"
             android:backgroundTint="#0077b6"
+            android:text="Login"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
@@ -156,9 +156,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/inputPassword"
-            android:gravity="center_horizontal"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15dp"
+            android:gravity="center_horizontal"
             android:text="Forgot Password"
             android:textColor="@color/black"
             android:textSize="14sp"
@@ -172,9 +172,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/inputPassword"
-            android:gravity="center_horizontal"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="60dp"
+            android:gravity="center_horizontal"
             android:text="New user? Sign Up"
             android:textColor="@color/black"
             android:textSize="18sp"
@@ -189,12 +189,12 @@
         android:id="@+id/fingerprintIcon"
         android:layout_width="88dp"
         android:layout_height="80dp"
+        android:visibility="gone"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
         android:gravity="center_horizontal"
-        android:layout_marginTop="200dp"
-        android:layout_marginBottom="50dp"
         android:tint="#03045e"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
