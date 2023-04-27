@@ -71,9 +71,9 @@ public class BaseActivity extends AppCompatActivity
 //            case R.id.nav_settings:
 //                startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
 //                break;
-//            case R.id.nav_help:
-//                startActivity(new Intent(getApplicationContext(), HelpActivity.class));
-//                break;
+            case R.id.nav_help:
+                startActivity(new Intent(getApplicationContext(), HelpActivity.class));
+                break;
         }
         drawer.closeDrawer(GravityCompat.START);
         return false;
