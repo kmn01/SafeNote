@@ -36,6 +36,9 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.concurrent.Executor;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,6 +54,23 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
+
+    private String hashPassword(String password) {
+        String hashedPassword = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hash = md.digest(password.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hash) {
+                sb.append(String.format("%02x", b));
+            }
+            hashedPassword = sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return hashedPassword;
+    }
+
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -196,13 +216,13 @@ public class MainActivity extends AppCompatActivity {
     private void performAuth(String email, String password) {
         progressDialog.setMessage("Login");
         progressDialog.show();
-        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        mAuth.signInWithEmailAndPassword(email, hashPassword(password)).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful() && checkEmailVerification()){
                     SharedPreferences.Editor editor = getSharedPreferences("data", MODE_PRIVATE).edit();
                     editor.putString("email", email);
-                    editor.putString("password", password);
+                    editor.putString("password", hashPassword(password));
                     editor.putBoolean("isLogin", true);
                     editor.apply();
                     progressDialog.dismiss();
