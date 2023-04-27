@@ -73,8 +73,9 @@ public class TrashActivity extends BaseActivity {
                 try {
                     String title = model.getTitle();
                     String content = model.getContent();
-                    holder.getNotetitle().setText(Encryption.decryptText(title));
-                    holder.getNotecontent().setText(Encryption.decryptText(content));
+                    String email = firebaseUser.getEmail();
+                    holder.getNotetitle().setText(Encryption.decryptText(title, getApplicationContext(), email));
+                    holder.getNotecontent().setText(Encryption.decryptText(content, getApplicationContext(), email));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

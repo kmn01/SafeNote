@@ -55,8 +55,9 @@ public class EditNoteActivity extends AppCompatActivity {
 //        editnote_title.setText(title);
 //        editnote_content.setText(content);
         try {
-            editnote_title.setText(Encryption.decryptText(title));
-            editnote_content.setText(Encryption.decryptText(content));
+            String email = firebaseUser.getEmail();
+            editnote_title.setText(Encryption.decryptText(title, getApplicationContext(), email));
+            editnote_content.setText(Encryption.decryptText(content, getApplicationContext(), email));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -96,8 +97,9 @@ public class EditNoteActivity extends AppCompatActivity {
 //                note.put("title", updated_title);
 //                note.put("content", updated_content);
                 try {
-                    note.put("title", Encryption.encryptText(updated_title));
-                    note.put("content", Encryption.encryptText(updated_content));
+                    String email = firebaseUser.getEmail();
+                    note.put("title", Encryption.encryptText(updated_title, getApplicationContext(), email));
+                    note.put("content", Encryption.encryptText(updated_content, getApplicationContext(), email));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

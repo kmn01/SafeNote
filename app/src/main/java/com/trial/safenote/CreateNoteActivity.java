@@ -58,8 +58,9 @@ public class CreateNoteActivity extends AppCompatActivity {
 //                note.put("title", title);
 //                note.put("content", content);
                 try {
-                    note.put("title", Encryption.encryptText(title));
-                    note.put("content", Encryption.encryptText(content));
+                    String email = firebaseUser.getEmail();
+                    note.put("title", Encryption.encryptText(title, getApplicationContext(), email));
+                    note.put("content", Encryption.encryptText(content, getApplicationContext(), email));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

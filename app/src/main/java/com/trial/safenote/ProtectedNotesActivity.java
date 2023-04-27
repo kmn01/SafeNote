@@ -72,8 +72,9 @@ public class ProtectedNotesActivity extends BaseActivity {
 ////                holder.getNotecontent().setText(model.getContent());
                 try {
                     String title = model.getTitle();
-//                    String content = model.getContent();
-                    holder.getNotetitle().setText(Encryption.decryptText(title));
+//                    String content =
+                    String email = firebaseUser.getEmail();
+                    holder.getNotetitle().setText(Encryption.decryptText(title, getApplicationContext(), email));
 //                    holder.getNotecontent().setText(Encryption.decryptText(content));
                 } catch (Exception e) {
                     e.printStackTrace();

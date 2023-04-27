@@ -83,20 +83,21 @@ public class MainActivity extends AppCompatActivity {
         buttonLogin = findViewById(R.id.buttonLogin);
         progressDialog = new ProgressDialog(this);
 
-        try {
-            storeKeyIfNotExists(getApplicationContext());
-            String et = Encryption.encryptText("hello how are you!");
-            System.out.println("Encrypted text ==== " + et);
-            System.out.println("Decrypted text ==== " + Encryption.decryptText(et));
-        } catch (NoSuchProviderException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (InvalidAlgorithmParameterException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+////            storeKeyIfNotExists(getApplicationContext());
+//            String email = mUser.getEmail();
+//            String et = Encryption.encryptText("hello how are you!", getApplicationContext(), email);
+//            System.out.println("Encrypted text ==== " + et);
+//            System.out.println("Decrypted text ==== " + Encryption.decryptText(et, getApplicationContext(), email));
+//        } catch (NoSuchProviderException e) {
+//            e.printStackTrace();
+//        } catch (NoSuchAlgorithmException e) {
+//            e.printStackTrace();
+//        } catch (InvalidAlgorithmParameterException e) {
+//            e.printStackTrace();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
@@ -274,26 +275,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    public static void storeKeyIfNotExists(Context context) {
-        String keyGeneratedFlag = "keyGeneratedFlag";
-        SharedPreferences prefs = context.getSharedPreferences("SafeNotePrefsFile", Context.MODE_PRIVATE);
-        boolean keyGenerated = prefs.getBoolean(keyGeneratedFlag, false);
-
-        if (!keyGenerated) {
-            // Key not generated, generate it now
-            try {
-                Encryption.storeKey();
-                prefs.edit().putBoolean(keyGeneratedFlag, true).apply();
-            } catch (NoSuchProviderException e) {
-                e.printStackTrace();
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (InvalidAlgorithmParameterException e) {
-                e.printStackTrace();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
 }

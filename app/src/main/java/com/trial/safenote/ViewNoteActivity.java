@@ -54,17 +54,19 @@ public class ViewNoteActivity extends AppCompatActivity {
         noteId = data.getStringExtra("noteId");
 //        viewnote_title.setText(title);
 //        viewnote_content.setText(content);
-        try {
-            viewnote_title.setText(Encryption.decryptText(title));
-            viewnote_content.setText(Encryption.decryptText(content));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        status = data.getStringExtra("status");
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         firebaseFirestore = FirebaseFirestore.getInstance();
+
+        try {
+            String email = firebaseUser.getEmail();
+            viewnote_title.setText(Encryption.decryptText(title, getApplicationContext(), email));
+            viewnote_content.setText(Encryption.decryptText(content, getApplicationContext(), email));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        status = data.getStringExtra("status");
 
         editnotebutton.setOnClickListener(new View.OnClickListener() {
             @Override
