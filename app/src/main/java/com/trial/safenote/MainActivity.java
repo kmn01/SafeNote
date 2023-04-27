@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
                     super.onAuthenticationSucceeded(result);
                     String email = sharedPreferences.getString("email", "");
                     String password = sharedPreferences.getString("password", "");
-                    performAuth(email, password);
+                    performAuthBio(email, password);
 //                    Toast.makeText(getApplicationContext(),
 //                            "Authentication succeeded!", Toast.LENGTH_SHORT).show();
 //                    startActivity(new Intent(MainActivity.this, NotesActivity.class));
@@ -229,6 +229,31 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Login Sucessful", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(MainActivity.this, NotesActivity.class));
                     } else{
+                    progressDialog.dismiss();
+                    mAuth.signOut();
+//                    Toast.makeText(MainActivity.this, ""+task.getException(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void performAuthBio(String email, String password) {
+        progressDialog.setMessage("Login");
+        progressDialog.show();
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful() && checkEmailVerification()){
+                    SharedPreferences.Editor editor = getSharedPreferences("data", MODE_PRIVATE).edit();
+                    editor.putString("email", email);
+                    editor.putString("password", password);
+                    editor.putBoolean("isLogin", true);
+                    editor.apply();
+                    progressDialog.dismiss();
+                    Toast.makeText(MainActivity.this, "Login Sucessful", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(MainActivity.this, NotesActivity.class));
+                } else{
                     progressDialog.dismiss();
                     mAuth.signOut();
 //                    Toast.makeText(MainActivity.this, ""+task.getException(), Toast.LENGTH_SHORT).show();
