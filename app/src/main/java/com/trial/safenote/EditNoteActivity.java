@@ -70,12 +70,12 @@ public class EditNoteActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String updated_title = editnote_title.getText().toString();
                 String updated_content = editnote_content.getText().toString();
-                if (title.length() > MAX_TITLE_LENGTH) {
+                if (updated_title.length() > MAX_TITLE_LENGTH) {
                     // Input is too long, display an error message to the user
                     Toast.makeText(getApplicationContext(), "Note title is too long.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (content.length() > MAX_NOTE_LENGTH) {
+                if (updated_content.length() > MAX_NOTE_LENGTH) {
                     // Input is too long, display an error message to the user
                     Toast.makeText(getApplicationContext(), "Note content is too long.", Toast.LENGTH_SHORT).show();
                     return;
