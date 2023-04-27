@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,6 +48,9 @@ public class ViewNoteActivity extends AppCompatActivity {
         viewnote_content = findViewById(R.id.viewnote_content);
         editnotebutton = findViewById(R.id.editnotefab);
         protectnotebutton = findViewById(R.id.protectnotefab);
+
+        viewnote_title.setMovementMethod(new ScrollingMovementMethod());
+        viewnote_content.setMovementMethod(new ScrollingMovementMethod());
 
         data = getIntent();
         title = data.getStringExtra("title");

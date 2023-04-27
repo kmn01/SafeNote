@@ -35,6 +35,9 @@ public class EditNoteActivity extends AppCompatActivity {
     private FirebaseUser firebaseUser;
     private FirebaseFirestore firebaseFirestore;
 
+    private int MAX_TITLE_LENGTH = 20;
+    private int MAX_NOTE_LENGTH = 9999;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +70,16 @@ public class EditNoteActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String updated_title = editnote_title.getText().toString();
                 String updated_content = editnote_content.getText().toString();
+                if (title.length() > MAX_TITLE_LENGTH) {
+                    // Input is too long, display an error message to the user
+                    Toast.makeText(getApplicationContext(), "Note title is too long.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (content.length() > MAX_NOTE_LENGTH) {
+                    // Input is too long, display an error message to the user
+                    Toast.makeText(getApplicationContext(), "Note content is too long.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 DocumentReference documentReference;
                 switch (status) {
                     case "protected": {

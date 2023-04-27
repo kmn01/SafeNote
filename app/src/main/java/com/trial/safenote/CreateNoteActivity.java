@@ -31,6 +31,9 @@ public class CreateNoteActivity extends AppCompatActivity {
     FirebaseUser firebaseUser;
     FirebaseFirestore firebaseFirestore;
 
+    private int MAX_TITLE_LENGTH = 20;
+    private int MAX_NOTE_LENGTH = 9999;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +52,16 @@ public class CreateNoteActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String title = createnotetitle.getText().toString();
                 String content = createnotecontent.getText().toString();
+                if (title.length() > MAX_TITLE_LENGTH) {
+                    // Input is too long, display an error message to the user
+                    Toast.makeText(getApplicationContext(), "Note title is too long.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (content.length() > MAX_NOTE_LENGTH) {
+                    // Input is too long, display an error message to the user
+                    Toast.makeText(getApplicationContext(), "Note content is too long.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 DocumentReference documentReference = firebaseFirestore
                         .collection("notes")
                         .document(firebaseUser.getUid())
