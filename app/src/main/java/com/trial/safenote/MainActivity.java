@@ -83,22 +83,6 @@ public class MainActivity extends AppCompatActivity {
         buttonLogin = findViewById(R.id.buttonLogin);
         progressDialog = new ProgressDialog(this);
 
-//        try {
-////            storeKeyIfNotExists(getApplicationContext());
-//            String email = mUser.getEmail();
-//            String et = Encryption.encryptText("hello how are you!", getApplicationContext(), email);
-//            System.out.println("Encrypted text ==== " + et);
-//            System.out.println("Decrypted text ==== " + Encryption.decryptText(et, getApplicationContext(), email));
-//        } catch (NoSuchProviderException e) {
-//            e.printStackTrace();
-//        } catch (NoSuchAlgorithmException e) {
-//            e.printStackTrace();
-//        } catch (InvalidAlgorithmParameterException e) {
-//            e.printStackTrace();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
 

@@ -64,9 +64,25 @@ public class ViewNoteActivity extends AppCompatActivity {
         firebaseFirestore = FirebaseFirestore.getInstance();
 
         try {
-            String email = firebaseUser.getEmail();
-            viewnote_title.setText(Encryption.decryptText(title, getApplicationContext(), email));
-            viewnote_content.setText(Encryption.decryptText(content, getApplicationContext(), email));
+//            String alias = firebaseUser.getEmail();
+            DocumentReference df = firebaseFirestore.collection("details")
+                    .document(firebaseUser.getUid());
+            df.get().addOnSuccessListener(dataSnapshot -> {
+                if (dataSnapshot.exists()) {
+                    String alias = dataSnapshot.getString("alias");
+                    try {
+                        viewnote_title.setText(Encryption.decryptText(title, getApplicationContext(), alias));
+                        viewnote_content.setText(Encryption.decryptText(content, getApplicationContext(), alias));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "Failed to get user details.", Toast.LENGTH_SHORT).show();
+                }
+            }).addOnFailureListener(e -> {
+                // error occurred while getting documents
+                Toast.makeText(getApplicationContext(), "Failed to get user details.", Toast.LENGTH_SHORT).show();
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }

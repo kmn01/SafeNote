@@ -57,13 +57,25 @@ public class EditNoteActivity extends AppCompatActivity {
         status = data.getStringExtra("status");
 //        editnote_title.setText(title);
 //        editnote_content.setText(content);
-        try {
-            String email = firebaseUser.getEmail();
-            editnote_title.setText(Encryption.decryptText(title, getApplicationContext(), email));
-            editnote_content.setText(Encryption.decryptText(content, getApplicationContext(), email));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//            String alias = firebaseUser.getEmail();
+        DocumentReference df = firebaseFirestore.collection("details")
+                .document(firebaseUser.getUid());
+        df.get().addOnSuccessListener(dataSnapshot -> {
+            if (dataSnapshot.exists()) {
+                String alias = dataSnapshot.getString("alias");
+                try {
+                    editnote_title.setText(Encryption.decryptText(title, getApplicationContext(), alias));
+                    editnote_content.setText(Encryption.decryptText(content, getApplicationContext(), alias));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Toast.makeText(getApplicationContext(), "Failed to get user details.", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(e -> {
+            // error occurred while getting documents
+            Toast.makeText(getApplicationContext(), "Failed to get user details.", Toast.LENGTH_SHORT).show();
+        });
 
         updatenotebutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,35 +121,47 @@ public class EditNoteActivity extends AppCompatActivity {
                 Map<String, Object> note = new HashMap<>();
 //                note.put("title", updated_title);
 //                note.put("content", updated_content);
-                try {
-                    String email = firebaseUser.getEmail();
-                    note.put("title", Encryption.encryptText(updated_title, getApplicationContext(), email));
-                    note.put("content", Encryption.encryptText(updated_content, getApplicationContext(), email));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                documentReference.set(note).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Toast.makeText(view.getContext(), "Updated Note", Toast.LENGTH_SHORT).show();
-                        switch(status) {
-                            case "protected": {
-                                startActivity(new Intent(EditNoteActivity.this, ProtectedNotesActivity.class));
-                                break;
-                            }
-                            case "deleted": {
-                                startActivity(new Intent(EditNoteActivity.this, TrashActivity.class));
-                                break;
-                            }
-                            default:
-                                startActivity(new Intent(EditNoteActivity.this, NotesActivity.class));
+//                    String alias = firebaseUser.getEmail();
+                DocumentReference df = firebaseFirestore.collection("details")
+                        .document(firebaseUser.getUid());
+                df.get().addOnSuccessListener(dataSnapshot -> {
+                    if (dataSnapshot.exists()) {
+                        String alias = dataSnapshot.getString("alias");
+                        try {
+                            note.put("title", Encryption.encryptText(updated_title, getApplicationContext(), alias));
+                            note.put("content", Encryption.encryptText(updated_content, getApplicationContext(), alias));
+                            documentReference.set(note).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Toast.makeText(view.getContext(), "Updated Note", Toast.LENGTH_SHORT).show();
+                                    switch(status) {
+                                        case "protected": {
+                                            startActivity(new Intent(EditNoteActivity.this, ProtectedNotesActivity.class));
+                                            break;
+                                        }
+                                        case "deleted": {
+                                            startActivity(new Intent(EditNoteActivity.this, TrashActivity.class));
+                                            break;
+                                        }
+                                        default:
+                                            startActivity(new Intent(EditNoteActivity.this, NotesActivity.class));
+                                    }
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(view.getContext(), "Update Note Failed", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Failed to get user details.", Toast.LENGTH_SHORT).show();
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(view.getContext(), "Update Note Failed", Toast.LENGTH_SHORT).show();
-                    }
+                }).addOnFailureListener(e -> {
+                    // error occurred while getting documents
+                    Toast.makeText(getApplicationContext(), "Failed to get user details.", Toast.LENGTH_SHORT).show();
                 });
             }
         });

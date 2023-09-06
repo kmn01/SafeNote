@@ -16,11 +16,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Random;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -60,13 +65,6 @@ public class SignupActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        signupbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(SignupActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
         backtologin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,6 +89,15 @@ public class SignupActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()){
                                 Toast.makeText(getApplicationContext(), "Registration Successful", Toast.LENGTH_SHORT).show();
+                                FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                                FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+                                DocumentReference documentReference = firebaseFirestore
+                                        .collection("details")
+                                        .document(firebaseUser.getUid());
+                                Map<String, Object> item = new HashMap<>();
+                                String alias = randomString();
+                                item.put("alias", alias);
+                                documentReference.set(item);
                                 sendEmailVerification();
                             }
                             else{
@@ -101,6 +108,18 @@ public class SignupActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private String randomString() {
+        String regex = "[A-Za-z0-9!@#$%^&*()_+-=[]{}|;:<>,.?]";
+        int length = 10;
+        StringBuilder randomString = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            int randomIndex = random.nextInt(regex.length());
+            randomString.append(regex.charAt(randomIndex));
+        }
+        return randomString.toString();
     }
 
     private boolean isValidPassword(String password){

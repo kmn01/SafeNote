@@ -73,9 +73,26 @@ public class TrashActivity extends BaseActivity {
                 try {
                     String title = model.getTitle();
                     String content = model.getContent();
-                    String email = firebaseUser.getEmail();
-                    holder.getNotetitle().setText(Encryption.decryptText(title, getApplicationContext(), email));
-                    holder.getNotecontent().setText(Encryption.decryptText(content, getApplicationContext(), email));
+//                    String alias = firebaseUser.getEmail();
+                    DocumentReference df = firebaseFirestore.collection("details")
+                            .document(firebaseUser.getUid());
+                    df.get().addOnSuccessListener(dataSnapshot -> {
+                        if (dataSnapshot.exists()) {
+                            String alias = dataSnapshot.getString("alias");
+                            try {
+                                holder.getNotetitle().setText(Encryption.decryptText(title, getApplicationContext(), alias));
+                                holder.getNotecontent().setText(Encryption.decryptText(content, getApplicationContext(), alias));
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Failed to get user details.", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(e -> {
+                        // error occurred while getting documents
+                        Toast.makeText(getApplicationContext(), "Failed to get user details.", Toast.LENGTH_SHORT).show();
+                    });
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

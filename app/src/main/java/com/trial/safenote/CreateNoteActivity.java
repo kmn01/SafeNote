@@ -71,24 +71,40 @@ public class CreateNoteActivity extends AppCompatActivity {
 //                note.put("title", title);
 //                note.put("content", content);
                 try {
-                    String email = firebaseUser.getEmail();
-                    note.put("title", Encryption.encryptText(title, getApplicationContext(), email));
-                    note.put("content", Encryption.encryptText(content, getApplicationContext(), email));
+//                    String alias = firebaseUser.getEmail();
+                    DocumentReference df = firebaseFirestore.collection("details")
+                            .document(firebaseUser.getUid());
+                    df.get().addOnSuccessListener(dataSnapshot -> {
+                        if (dataSnapshot.exists()) {
+                            String alias = dataSnapshot.getString("alias");
+                            try {
+                                note.put("title", Encryption.encryptText(title, getApplicationContext(), alias));
+                                note.put("content", Encryption.encryptText(content, getApplicationContext(), alias));
+                                documentReference.set(note).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Toast.makeText(getApplicationContext(), "Created Note", Toast.LENGTH_SHORT).show();
+                                        view.getContext().startActivity(new Intent(CreateNoteActivity.this, NotesActivity.class));
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(getApplicationContext(), "Create Note Failed", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Failed to get user details.", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(e -> {
+                        // error occurred while getting documents
+                        Toast.makeText(getApplicationContext(), "Failed to get user details.", Toast.LENGTH_SHORT).show();
+                    });
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                documentReference.set(note).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Toast.makeText(getApplicationContext(), "Created Note", Toast.LENGTH_SHORT).show();
-                        view.getContext().startActivity(new Intent(CreateNoteActivity.this, NotesActivity.class));
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(), "Create Note Failed", Toast.LENGTH_SHORT).show();
-                    }
-                });
             }
         });
     }
