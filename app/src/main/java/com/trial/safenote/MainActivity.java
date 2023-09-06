@@ -71,6 +71,18 @@ public class MainActivity extends AppCompatActivity {
         return hashedPassword;
     }
 
+    private boolean checkIfFirstRun() {
+        SharedPreferences sharedPreferences = getSharedPreferences("data", MODE_PRIVATE);
+        boolean isFirstRun = sharedPreferences.getBoolean("is_first_run", true);
+        if (isFirstRun) {
+            // Set the flag to false to indicate that it's not the first run anymore
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("is_first_run", false);
+            editor.apply();
+        }
+        return isFirstRun;
+    }
+
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -89,10 +101,16 @@ public class MainActivity extends AppCompatActivity {
         gotoforgotpassword = findViewById(R.id.gotoforgotpassword);
         gotosignup = findViewById(R.id.gotosignup);
 
-//        if(mUser != null){
-//            finish();
-//            startActivity(new Intent(MainActivity.this, NotesActivity.class));
-//        }
+        boolean isFirstRun = checkIfFirstRun();
+        if (isFirstRun) {
+            try {
+                // Generate and store the keys during the first run
+                KeyManagement.generateAndStoreAsymmetricKeyPair();
+                KeyManagement.encryptAndStoreSymmetricKey(getApplicationContext());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
         gotoforgotpassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,10 +186,11 @@ public class MainActivity extends AppCompatActivity {
                     super.onAuthenticationSucceeded(result);
                     String email = sharedPreferences.getString("email", "");
                     String password = sharedPreferences.getString("password", "");
-                    performAuthBio(email, password);
-//                    Toast.makeText(getApplicationContext(),
-//                            "Authentication succeeded!", Toast.LENGTH_SHORT).show();
-//                    startActivity(new Intent(MainActivity.this, NotesActivity.class));
+                    try {
+                        performAuthBio(email, KeyManagement.decryptPassword(password, getApplicationContext()));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
             }
 
             @Override
@@ -201,13 +220,19 @@ public class MainActivity extends AppCompatActivity {
     private void performAuth(String email, String password) {
         progressDialog.setMessage("Login");
         progressDialog.show();
-        mAuth.signInWithEmailAndPassword(email, hashPassword(password)).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+//        mAuth.signInWithEmailAndPassword(email, hashPassword(password)).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful() && checkEmailVerification()){
                     SharedPreferences.Editor editor = getSharedPreferences("data", MODE_PRIVATE).edit();
                     editor.putString("email", email);
-                    editor.putString("password", hashPassword(password));
+//                    editor.putString("password", hashPassword(password));
+                    try {
+                        editor.putString("password", KeyManagement.encryptPassword(password, getApplicationContext()));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     editor.putBoolean("isLogin", true);
                     editor.apply();
                     progressDialog.dismiss();
@@ -232,7 +257,11 @@ public class MainActivity extends AppCompatActivity {
                 if (task.isSuccessful() && checkEmailVerification()){
                     SharedPreferences.Editor editor = getSharedPreferences("data", MODE_PRIVATE).edit();
                     editor.putString("email", email);
-                    editor.putString("password", password);
+                    try {
+                        editor.putString("password", KeyManagement.encryptPassword(password, getApplicationContext()));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     editor.putBoolean("isLogin", true);
                     editor.apply();
                     progressDialog.dismiss();

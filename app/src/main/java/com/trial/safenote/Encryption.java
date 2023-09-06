@@ -16,38 +16,6 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 
 public class Encryption {
-//    @RequiresApi(api = Build.VERSION_CODES.M)
-//    public static SecretKey generateKey() throws NoSuchProviderException, NoSuchAlgorithmException, InvalidAlgorithmParameterException {
-//        String alias = "safenoteKeyAlias";
-//        KeyGenerator keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");
-//        KeyGenParameterSpec keySpec = new KeyGenParameterSpec.Builder(alias, KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
-//                .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
-//                .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
-//                .setUserAuthenticationRequired(false)
-//                .build();
-//        keyGenerator.init(keySpec);
-//        SecretKey secretKey = keyGenerator.generateKey();
-//        return secretKey;
-//    }
-//    @RequiresApi(api = Build.VERSION_CODES.M)
-//    public static void storeKey() throws KeyStoreException, CertificateException, NoSuchAlgorithmException, IOException, NoSuchProviderException, InvalidAlgorithmParameterException {
-//        String alias = "safenoteKeyAlias";
-//        KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
-//        keyStore.load(null);
-//        SecretKey secretKey = generateKey();
-//        KeyStore.SecretKeyEntry entry = new KeyStore.SecretKeyEntry(secretKey);
-//        keyStore.setEntry(alias, entry, null);
-//    }
-//    private static SecretKey accessKey(Context context) throws KeyStoreException, NoSuchAlgorithmException, UnrecoverableEntryException, CertificateException, IOException {
-//        String alias = "safenoteKeyAlias";
-//        KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
-//        keyStore.load(null);
-//        KeyStore.Entry entry = keyStore.getEntry(alias, null);
-//        if (entry == null || !(entry instanceof KeyStore.SecretKeyEntry)) {
-//            return null;
-//        }
-//        SecretKey secretKey = ((KeyStore.SecretKeyEntry) entry).getSecretKey();
-//    }
 
     public static SecretKey generateKey(Context context, String alias) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException, InvalidKeySpecException {
         byte[] salt = alias.getBytes(StandardCharsets.UTF_8);

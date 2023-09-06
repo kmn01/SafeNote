@@ -84,8 +84,9 @@ public class SignupActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Password must be 8-25 characters long and must contain at least one digit, special character, lower and upper case alphabet", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    firebaseAuth.createUserWithEmailAndPassword(email, hashPassword(password)).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
+//                    firebaseAuth.createUserWithEmailAndPassword(email, hashPassword(password)).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()){
                                 Toast.makeText(getApplicationContext(), "Registration Successful", Toast.LENGTH_SHORT).show();
